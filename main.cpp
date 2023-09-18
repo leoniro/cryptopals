@@ -232,7 +232,7 @@ int main() {
     */
 
     // challenge 4:
-    /* string line, bestString, s, plainText;
+    string line, bestString, s, plainText;
     float score, bestScore = -100;
     ifstream inputFile;
     inputFile.open("4.txt");
@@ -248,7 +248,7 @@ int main() {
         }
     }
     inputFile.close();
-    cout << bestScore << " " << bestString << endl; */
+    cout << bestScore << " " << bestString << endl;
 
     // challenge 5:
     /* string str = "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal";
