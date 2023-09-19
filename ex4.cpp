@@ -20,7 +20,7 @@ int main() {
     }
     inputFile.close();
 
-    std::cout << "Encontrar e quebrar xor de 1 char:\n";
+    std::cout << "Desafio 4: Encontrar e quebrar xor de 1 char:\n";
     std::cout << "Texto cifrado: " << bestLine.toBase16() << "\n";
     std::cout << "Chave: " << bestKey.toPlainText() << "\n";
     std::cout << "Pontuação: " << bestScore << "\n";

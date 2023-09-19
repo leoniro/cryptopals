@@ -7,7 +7,7 @@ int main() {
     BitArray v16 = BitArray(x16,"base16");
     BitArray v64 = BitArray(x64,"base64");
 
-    std::cout << "Convertendo base16 para base64:" << "\n";
+    std::cout << "Desafio 1: Convertendo base16 para base64:" << "\n";
     std::cout << "Esperado: " << x64 << "\n";
     std::cout << "  Obtido: " << v16.toBase64() << "\n\n";
     std::cout << "Convertendo base64 para base16:" << "\n";

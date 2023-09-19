@@ -1,10 +1,10 @@
 #include "auxFuncs.h"
 #include <openssl/evp.h>
 
-// This code is adapted from the OpenSSL manual:
-// https://www.openssl.org/docs/man3.0/man3/EVP_CIPHER_fetch.html
 int do_crypt(FILE *in, FILE *out, int do_encrypt)
-{
+{   
+    // This code is adapted from the OpenSSL manual:
+    // https://www.openssl.org/docs/man3.1/man3/EVP_CipherInit_ex2.html
     /* Allow enough space in output buffer for additional block */
     unsigned char inbuf[1024], outbuf[1024 + EVP_MAX_BLOCK_LENGTH];
     int inlen, outlen;
@@ -57,11 +57,23 @@ int do_crypt(FILE *in, FILE *out, int do_encrypt)
 }
 
 int main() {
+    // convert base64 to ascii:
+    std::ifstream f1;
+    std::ofstream f2;
+    f1.open("7.txt");
+    f2.open("7p.txt");
+    std::string line;
+    while (std::getline(f1,line)) {
+        f2 << BitArray(line,"base64").toPlainText();
+    }
+    f1.close();
+    f2.close();
+
     FILE * inFile;
     FILE * outFile;
-    inFile = fopen("7.txt", "r");
+    inFile = fopen("7p.txt", "r");
     outFile = fopen("7d.txt", "w");
-
+    do_crypt(inFile, outFile, 1);
     fclose(inFile);
     fclose(outFile);
 }

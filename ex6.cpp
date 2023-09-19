@@ -13,6 +13,7 @@ int main() {
     BitArray cypherText = BitArray(v);
     int keySize = cypherText.probableKeySize();
     BitArray key = cypherText.breakRepeatingKeyXor(keySize);
+    std::cout << "Desafio 6: Quebrar xor com chave repetida:" << "\n";
     std::cout << "Texto:" << "\n";
     std::cout << (cypherText ^ key).toPlainText() << "\n\n";
     std::cout << "Chave: " << key.toPlainText() << "\n\n";

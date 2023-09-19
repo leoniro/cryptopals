@@ -8,7 +8,7 @@ int main() {
     BitArray v2 = BitArray(s2, "base16");
     BitArray v3 = v1 ^ v2;
     
-    std::cout << "xor entre dois hexadecimais:" << "\n";
+    std::cout << "Desafio 2: xor entre dois hexadecimais:" << "\n";
     std::cout << "Esperado: " << s3 << "\n";
     std::cout << "  Obtido: " << v3.toBase16() << "\n\n";
 
