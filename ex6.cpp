@@ -10,7 +10,11 @@ int main() {
         v.insert(v.end(), vLine.bits.begin(), vLine.bits.end());
     }
     file.close();
-    BitArray cypher = BitArray(v);
-    int keySize = cypher.probableKeySize();
-    std::cout << cypher.toBase64() << "\n";
+    BitArray cypherText = BitArray(v);
+    int keySize = cypherText.probableKeySize();
+    BitArray key = cypherText.breakRepeatingKeyXor(keySize);
+    std::cout << "Texto:" << "\n";
+    std::cout << (cypherText ^ key).toPlainText() << "\n\n";
+    std::cout << "Chave:" << "\n";
+    std::cout << key.toPlainText() << "\n";
 }

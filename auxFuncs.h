@@ -5,6 +5,7 @@
 
 class BitArray;
 BitArray operator^( BitArray v1, BitArray v2);
+std::ostream& operator<<(std::ostream& os, BitArray v);
 int hammingDistance(BitArray v1, BitArray v2);
 
 class BitArray {
@@ -124,7 +125,7 @@ class BitArray {
         letterFrequency['x'] = 0.0015;
         letterFrequency['y'] = 0.020;
         letterFrequency['z'] = 0.00074;
-        letterFrequency[' '] = (1-1/5.1)/5.1; // from average english word length (wolfram alpha)
+        letterFrequency[' '] = 1.0/(5.1 + 1); // from average english word length (wolfram alpha)
         float score = 0;
         int nonPrintableCount = 0;
         for (int i = 0; i < str.size(); i++) {
@@ -149,7 +150,7 @@ class BitArray {
     }
 
     std::tuple<float, std::string, char> breakSingleCharXor() {
-        // brute-force cypher encrypted with single-char xor
+        // brute-force cyphertext encrypted with single-char xor
         float score, bestScore = -100;
         char bestKey;
         std::string bestString;
@@ -168,14 +169,30 @@ class BitArray {
 
     int probableKeySize() {
         float dist, minDist = 1000;
-        int key;
+        int keySize;
         for (int k = 2*8; k<=40*8; k += 8) {
-            std::vector<bool> v1(bits.begin(), bits.begin() + 2*k);
-            std::vector<bool> v2(bits.begin() + 2*k,bits.begin() + 4*k);
+            // Using xor between 2 block of size 4*keysize each
+            std::vector<bool> v1(bits.begin(), bits.begin() + 4*k);
+            std::vector<bool> v2(bits.begin() + 4*k,bits.begin() + 8*k);
             dist = (float)hammingDistance(BitArray(v1), BitArray(v2))/k;
-            if (dist < minDist) { minDist = dist; key = k; }
+            if (dist < minDist) { minDist = dist; keySize = k; }
         }
-        return key/8;
+        return keySize/8;
+    }
+
+    BitArray breakRepeatingKeyXor(int keySize) {
+        std::string text, key = "";
+        char c;
+        float score;
+        for (int k = 0; k < keySize; k++) {
+            std::vector<bool> v = {};
+            for(int i = k*8; i< size(); i += 8*keySize) {
+                v.insert(v.end(), bits.begin()+i, bits.begin()+i+8);
+            }
+            std::tie(score, text, c) = BitArray(v).breakSingleCharXor();
+            key += c;
+        }
+        return BitArray(key,"ascii");
     }
 
     private:
