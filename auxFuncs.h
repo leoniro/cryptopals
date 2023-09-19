@@ -24,7 +24,7 @@ class BitArray {
         }
     }
 
-    BitArray(std::vector<bool> v) {
+    BitArray(std::vector<bool> v = {}) {
         bits = v;
     }
 
@@ -149,22 +149,21 @@ class BitArray {
         return score;
     }
 
-    std::tuple<float, std::string, char> breakSingleCharXor() {
+    BitArray breakSingleCharXor() {
         // brute-force cyphertext encrypted with single-char xor
         float score, bestScore = -100;
-        char bestKey;
         std::string bestString;
+        BitArray bestKey;
         for (int c = 0; c < 256 ; c++) {
             BitArray candidateKey = BitArray(std::string(1,char(c)), "ascii");
             BitArray candidateText = *this ^ candidateKey;
             score = candidateText.englishScore();
             if (score > bestScore) { 
                 bestScore = score;
-                bestKey = char(c);
-                bestString = candidateText.toPlainText();
+                bestKey = candidateKey;
             }
         }
-        return std::make_tuple(bestScore, bestString, bestKey);
+        return bestKey;
     }
 
     int probableKeySize() {
@@ -181,15 +180,14 @@ class BitArray {
     }
 
     BitArray breakRepeatingKeyXor(int keySize) {
-        std::string text, key = "";
-        char c;
+        std::string text, c, key = "";
         float score;
         for (int k = 0; k < keySize; k++) {
             std::vector<bool> v = {};
             for(int i = k*8; i< size(); i += 8*keySize) {
                 v.insert(v.end(), bits.begin()+i, bits.begin()+i+8);
             }
-            std::tie(score, text, c) = BitArray(v).breakSingleCharXor();
+            c = BitArray(v).breakSingleCharXor().toPlainText();
             key += c;
         }
         return BitArray(key,"ascii");
@@ -223,7 +221,7 @@ class BitArray {
             else if ('0' <= c && c <= '9') { d = c - '0' + 52; }
             else if ( c == '+') { d = 62; }
             else if ( c == '/') { d = 63; }
-            else if ( c == '=') { break; }
+            else if ( c == '=') { break; } 
             for (int pow2 = 32; pow2 > 0; pow2 /= 2) {
                 bits.push_back(d / pow2);
                 d = d % pow2;

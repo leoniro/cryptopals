@@ -15,6 +15,5 @@ int main() {
     BitArray key = cypherText.breakRepeatingKeyXor(keySize);
     std::cout << "Texto:" << "\n";
     std::cout << (cypherText ^ key).toPlainText() << "\n\n";
-    std::cout << "Chave:" << "\n";
-    std::cout << key.toPlainText() << "\n";
+    std::cout << "Chave: " << key.toPlainText() << "\n\n";
 }
